@@ -81,6 +81,17 @@ export const work = [
     image: "/work/chazoku.webp",
   },
   {
+    name: "Reactistan",
+    meta: "Custom theme · Lifestyle & gifts · 2026",
+    title: "Reactistan — a truck-art brand store",
+    brief: "Give a Pakistani truck-art mug brand a store that feels as loud, colourful and nostalgic as its products.",
+    built: "A custom Beecreative theme on Dawn: a truck-art visual system with patterned borders, bold display type, Urdu lettering and a retro-TV video block, plus product, story and contact pages.",
+    result: "Live at reactistan.com, with the brand's look carried through every page while staying editable from the theme editor.",
+    tags: ["Liquid", "Dawn", "Custom sections", "CSS", "Brand design"],
+    link: { href: "https://www.reactistan.com", label: "Visit reactistan.com", external: true },
+    image: "/work/reactistan.webp",
+  },
+  {
     name: "Bee Pre Order",
     meta: "Public Shopify app · Bee Creative · 2026",
     title: "Bee Pre Order — app, website and demo store",
@@ -141,6 +152,7 @@ export const work = [
 export const projects = [
   // Shopify stores & themes
   { name: "Used Conex", type: "Shopify", what: "WordPress → Shopify migration, Figma build, 58 city pages", stack: "Dawn · Metafields · GSAP", url: "https://usedconex.com", image: "/work/usedconex.webp" },
+  { name: "Reactistan", type: "Shopify", what: "Custom truck-art brand theme with Urdu lettering and a retro-TV video block", stack: "Dawn · Custom sections", url: "https://www.reactistan.com", image: "/work/reactistan.webp" },
   { name: "Chazoku", type: "Shopify", what: "Recharge subscriptions, app-proxy bridge, Shopify Flow", stack: "Broadcast · Recharge", url: "https://chazoku.com", image: "/work/chazoku.webp" },
   { name: "Klone Scents", type: "Shopify", what: "Custom bundle picker synced with Kaching", stack: "Shrine PRO · JavaScript", url: "https://klonescents.com", image: "/work/klone.webp" },
   { name: "DrinkLAF", type: "Shopify", what: "SEAL Subscribe & Save, customer-service tooling audit", stack: "SEAL · Klaviyo", url: "https://drinklaf.com", image: "/work/drinklaf.webp" },
