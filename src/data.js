@@ -155,15 +155,15 @@ export const projects = [
   { name: "Alohi", type: "Shopify", what: "Theme build with Playwright browser checks", stack: "Horizon", url: "https://drinkalohi.com", image: "/work/alohi.webp" },
   { name: "Cooper's Gang", type: "Shopify", what: "Dog grooming and boutique store customisation", stack: "Honey theme", url: "https://coopersgang.co.uk", image: "/work/coopers.webp" },
   { name: "Chroma Skin Tech", type: "Shopify", what: "Skincare-device store customisation", stack: "Purity theme", url: "https://chromaskintech.com", image: "/work/chroma.webp" },
-  { name: "Salthouse the Label", type: "Shopify", what: "Theme customisation", stack: "Dawn" },
+  { name: "Salthouse the Label", type: "Shopify", what: "Sun-protective swimwear store customisation", stack: "Dawn", image: "/work/salthouse.webp" },
   { name: "Insta Shower", type: "Shopify", what: "Teen hygiene brand store customisation", stack: "Dawn", url: "https://www.instashower.com", image: "/work/instashower.webp" },
   { name: "ST Threadz", type: "Shopify", what: "Fashion store custom sections", stack: "Liquid", url: "https://stthreadz.com", image: "/work/stthreadz.webp" },
   { name: "Bee Upload Kit — demo site", type: "Shopify", what: "Custom demo theme and marketing site for Bee Creative's file-upload app: hero, pricing, docs, live demo grid and two print-shop demo stores", stack: "Custom Liquid theme · OS 2.0 · HTML", image: "/work/uploadkit.webp" },
   // Shopify apps
   { name: "Bee Pre Order", type: "Apps", what: "Public app plus its website and demo store: pre-orders, deposits, back-in-stock alerts", stack: "React Router · Polaris", url: "https://bpo.beecreative.pk", image: "/work/beepreorder.webp" },
-  { name: "Bee Bundle Box", type: "Apps", what: "Public app plus its website and demo theme: build-your-own bundle boxes", stack: "React Router · Extensions · Liquid" },
+  { name: "Bee Bundle Box", type: "Apps", what: "Public app plus its website and demo theme: build-your-own bundle boxes", stack: "React Router · Extensions · Liquid", image: "/work/bundlebox.webp" },
   { name: "Parcel Intelligence", type: "Apps", what: "Extension-only Shopify app for a store migration", stack: "Preact · App Bridge", url: "https://parcelintelligence.com.au", image: "/work/pts.webp" },
-  { name: "Northfield", type: "Apps", what: "Bulk store-data migration with GraphQL bulk operations", stack: "Admin GraphQL" },
+  { name: "Northfield", type: "Apps", what: "HS code and country-of-origin bulk updates with GraphQL bulk operations", stack: "Admin GraphQL", url: "https://www.northfield.com", image: "/work/northfield.webp" },
   // Web & WordPress
   { name: "Infuse Digitals", type: "Web", what: "Agency site rebuilt from a WordPress backup", stack: "React · Vite · GSAP · Lenis", url: "https://infusedigitals.com", image: "/work/infuse.webp" },
   { name: "Adjuvia Therapeutics", type: "Web", what: "Homepage built from Figma", stack: "WordPress", url: "https://adjuvia.com", image: "/work/adjuvia.webp" },
