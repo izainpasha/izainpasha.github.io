@@ -1,7 +1,7 @@
 import { MotionConfig } from "motion/react";
 import Header from "./components/Header.jsx";
 import Hero from "./components/Hero.jsx";
-import { Contact, Experience, Footer, Process, ProjectIndex, Proof, Services, Skills, Work } from "./components/Sections.jsx";
+import { Contact, Experience, Footer, Gallery, Process, ProjectIndex, Proof, Services, Skills, Work } from "./components/Sections.jsx";
 
 export default function App() {
   return (
@@ -14,6 +14,7 @@ export default function App() {
         <Services />
         <Work />
         <ProjectIndex />
+        <Gallery />
         <Process />
         <Experience />
         <Skills />

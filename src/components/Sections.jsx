@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { delivery, education, experience, process, profile, projects, proof, services, tech, work } from "../data.js";
+import { gallery } from "../gallery.js";
 import CountUp from "./CountUp.jsx";
 import Icon from "./Icon.jsx";
 import Reveal from "./Reveal.jsx";
@@ -122,10 +123,37 @@ function Thumb({ name, image, small = false }) {
 }
 
 const filters = ["All", "Shopify", "Apps", "Web"];
+const industriesOf = (items) => [...new Set(items.map((p) => p.industry).filter(Boolean))].sort();
+
+function IndustrySelect({ id, value, onChange, items }) {
+  return (
+    <label className="industry-select" htmlFor={id}>
+      <span>Industry</span>
+      <select id={id} value={value} onChange={(e) => onChange(e.target.value)}>
+        <option value="All">All industries</option>
+        {industriesOf(items).map((i) => (
+          <option key={i} value={i}>{i} ({items.filter((p) => p.industry === i).length})</option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function SiteLink({ url }) {
+  if (!url) return null;
+  return (
+    <a className="link" href={url} target="_blank" rel="noreferrer">
+      {new URL(url).hostname.replace(/^www\./, "")} <span aria-hidden="true">↗</span>
+      <span className="visually-hidden">(opens in a new tab)</span>
+    </a>
+  );
+}
 
 export function ProjectIndex() {
   const [filter, setFilter] = useState("All");
-  const shown = filter === "All" ? projects : projects.filter((p) => p.type === filter);
+  const [industry, setIndustry] = useState("All");
+  const byType = filter === "All" ? projects : projects.filter((p) => p.type === filter);
+  const shown = industry === "All" ? byType : byType.filter((p) => p.industry === industry);
 
   return (
     <section className="section container" id="projects" aria-labelledby="projects-title">
@@ -135,31 +163,31 @@ export function ProjectIndex() {
         id="projects-title"
         title={`${projects.length} projects, from theme fixes to public apps`}
       />
-      <Reveal className="filters" role="group" aria-label="Filter projects">
-        {filters.map((f) => {
-          const count = f === "All" ? projects.length : projects.filter((p) => p.type === f).length;
-          return (
-            <button key={f} type="button" className="filter" aria-pressed={filter === f} onClick={() => setFilter(f)}>
-              {f === "Apps" ? "Shopify apps" : f === "Web" ? "WordPress, Webflow & web" : f} <span className="filter-count">{count}</span>
-            </button>
-          );
-        })}
+      <Reveal className="filter-bar">
+        <div className="filters" role="group" aria-label="Filter projects by type">
+          {filters.map((f) => {
+            const count = f === "All" ? projects.length : projects.filter((p) => p.type === f).length;
+            return (
+              <button key={f} type="button" className="filter" aria-pressed={filter === f} onClick={() => setFilter(f)}>
+                {f === "Apps" ? "Shopify apps" : f === "Web" ? "WordPress, Webflow & web" : f} <span className="filter-count">{count}</span>
+              </button>
+            );
+          })}
+        </div>
+        <IndustrySelect id="project-industry" value={industry} onChange={setIndustry} items={projects} />
       </Reveal>
       <p className="visually-hidden" aria-live="polite">{shown.length} projects shown</p>
+      {shown.length === 0 && <p className="empty-note">No projects match these filters.</p>}
       <ul className="project-grid">
         {shown.map((p) => (
-          <li key={`${filter}-${p.name}`} className="project">
+          <li key={`${filter}-${industry}-${p.name}`} className="project">
             <Thumb name={p.name} image={p.image} small />
             <div className="project-body">
+              {p.industry && <p className="project-industry">{p.industry}</p>}
               <h3>{p.name}</h3>
               <p>{p.what}</p>
               <p className="project-stack">{p.stack}</p>
-              {p.url && (
-                <a className="link" href={p.url} target="_blank" rel="noreferrer">
-                  {new URL(p.url).hostname.replace(/^www\./, "")} <span aria-hidden="true">↗</span>
-                  <span className="visually-hidden">(opens in a new tab)</span>
-                </a>
-              )}
+              <SiteLink url={p.url} />
             </div>
           </li>
         ))}
@@ -168,10 +196,64 @@ export function ProjectIndex() {
   );
 }
 
+const PAGE = 12;
+
+export function Gallery() {
+  const [industry, setIndustry] = useState("All");
+  const [limit, setLimit] = useState(PAGE);
+  if (!gallery.length) return null;
+  const counts = industriesOf(gallery).map((i) => [i, gallery.filter((g) => g.industry === i).length]).sort((a, b) => b[1] - a[1]);
+  const all = industry === "All" ? gallery : gallery.filter((g) => g.industry === industry);
+  const shown = all.slice(0, limit);
+  const pick = (i) => { setIndustry(i); setLimit(PAGE); };
+
+  return (
+    <section className="section container" id="stores" aria-labelledby="stores-title">
+      <SectionHead
+        index="04"
+        label="More client stores"
+        id="stores-title"
+        title={`${gallery.length} more live stores, delivered with my teams at Beecreative`}
+        note="As Team Lead and Production Manager I scoped, reviewed and shipped these with Beecreative's developers and designers."
+      />
+      <Reveal className="filters chips" role="group" aria-label="Filter stores by industry">
+        <button type="button" className="filter" aria-pressed={industry === "All"} onClick={() => pick("All")}>
+          All <span className="filter-count">{gallery.length}</span>
+        </button>
+        {counts.map(([i, n]) => (
+          <button key={i} type="button" className="filter" aria-pressed={industry === i} onClick={() => pick(i)}>
+            {i} <span className="filter-count">{n}</span>
+          </button>
+        ))}
+      </Reveal>
+      <p className="visually-hidden" aria-live="polite">{all.length} stores shown</p>
+      <ul className="store-grid">
+        {shown.map((g) => (
+          <li key={`${industry}-${g.url}`} className="store">
+            <Thumb name={g.name} image={g.image} small />
+            <div className="store-body">
+              <h3>{g.name}</h3>
+              <p className="project-stack">{g.industry} · {g.platform}</p>
+              <SiteLink url={g.url} />
+            </div>
+          </li>
+        ))}
+      </ul>
+      {limit < all.length && (
+        <div className="more-row">
+          <button type="button" className="btn btn-ghost" onClick={() => setLimit((l) => l + PAGE * 2)}>
+            Show more stores <span className="filter-count">{all.length - limit} left</span>
+          </button>
+        </div>
+      )}
+    </section>
+  );
+}
+
 export function Process() {
   return (
     <section className="section container" id="process" aria-labelledby="process-title">
-      <SectionHead index="04" label="Process" id="process-title" title="From brief to launch, and after" />
+      <SectionHead index="05" label="Process" id="process-title" title="From brief to launch, and after" />
       <ol className="process">
         {process.map((p, i) => (
           <Reveal as="li" key={p.title} delay={i * 0.06}>
@@ -189,7 +271,7 @@ export function Experience() {
   return (
     <section className="section container" id="experience" aria-labelledby="exp-title">
       <SectionHead
-        index="05"
+        index="06"
         label="Experience"
         id="exp-title"
         title="Four roles at one agency, from developer to production lead"
@@ -222,7 +304,7 @@ export function Experience() {
 export function Skills() {
   return (
     <section className="section container" id="skills" aria-labelledby="skills-title">
-      <SectionHead index="06" label="Technologies" id="skills-title" title="The tech and tools I use" />
+      <SectionHead index="07" label="Technologies" id="skills-title" title="The tech and tools I use" />
       <ul className="tech-grid">
         {tech.map((t, i) => (
           <Reveal as="li" key={t.name} className="tech" delay={(i % 6) * 0.04}>
@@ -245,7 +327,7 @@ export function Contact() {
   return (
     <section className="contact" id="contact" aria-labelledby="contact-title">
       <div className="container contact-inner">
-        <Reveal as="p" className="section-label">07 / Contact</Reveal>
+        <Reveal as="p" className="section-label">08 / Contact</Reveal>
         <Reveal as="h2" id="contact-title">Have a store or site to build or fix?</Reveal>
         <Reveal as="p" className="lede">
           Send me the brief, the designs or just the URL. I'll reply with next steps and a rough timeline.
