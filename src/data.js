@@ -28,6 +28,10 @@ export const proof = [
   { value: 25, suffix: "%", label: "Of clients come back" },
 ];
 
+// Read word by word as it scrolls past (Manifesto.jsx).
+export const manifesto =
+  "I started in 2021 as a junior developer fixing Liquid templates. Today I run production for two teams of 13+ developers and PMs, and I still write the hard parts myself: a cart that sells subscriptions, an app-proxy bridge for first-order gifts, a gang-sheet editor that prints at 300 DPI.";
+
 export const services = [
   {
     icon: "theme",
@@ -199,7 +203,7 @@ export const projects = [
   { name: "Mad Monkey Transfers", type: "Shopify", industry: "Arts, Books & Gifts", what: "DTF product page and an upload-or-build chooser wired into the Gang Sheet and shirt builder apps, plus vinyl banner and patch templates", stack: "Dawn · Custom sections", url: "https://madmonkeytransfers.com", image: "/work/madmonkey.webp" },
   { name: "US Filtermaxx", type: "Shopify", industry: "Industrial & Trade", what: "37 custom sections for an industrial centrifuge and pump store, with suction and discharge hose sizing calculators and a hose kit builder", stack: "Dawn · Custom sections · JavaScript", url: "https://usfiltermaxx.com", image: "/work/usfiltermaxx.webp" },
   { name: "The Cocoa Nook", type: "Shopify", industry: "Food & Drink", what: "Store moved onto Dawn 16 with a video-led product template, subscription popup and wishlist", stack: "Dawn 16 · Liquid" },
-  { name: "Revarla", type: "Shopify", industry: "Beauty & Skincare", what: "Replo product page rebuilt natively in the theme, with Kaching bundle selectors and free-gift cart lines", stack: "Elixir theme · Kaching" },
+  { name: "Revarla", type: "Shopify", industry: "Beauty & Skincare", what: "Replo product page rebuilt natively in the theme, with Kaching bundle selectors and free-gift cart lines", stack: "Elixir theme · Kaching", url: "https://revarla.com", image: "/work/revarla.webp" },
   { name: "Used Conex", type: "Shopify", industry: "Industrial & Trade", what: "WordPress → Shopify migration, Figma build, 58 city pages", stack: "Dawn · Metafields · GSAP", url: "https://usedconex.com", image: "/work/usedconex.webp" },
   { name: "Reactistan", type: "Shopify", industry: "Arts, Books & Gifts", what: "Custom truck-art brand theme with Urdu lettering and a retro-TV video block", stack: "Dawn · Custom sections", url: "https://www.reactistan.com", image: "/work/reactistan.webp" },
   { name: "Chazoku", type: "Shopify", industry: "Food & Drink", what: "Recharge subscriptions, app-proxy bridge, Shopify Flow", stack: "Broadcast · Recharge", url: "https://chazoku.com", image: "/work/chazoku.webp" },
@@ -222,7 +226,7 @@ export const projects = [
   { name: "Bee Upload Kit — demo site", type: "Shopify", industry: "Software & Apps", what: "Custom demo theme and marketing site for Bee Creative's file-upload app: hero, pricing, docs, live demo grid and two print-shop demo stores", stack: "Custom Liquid theme · OS 2.0 · HTML", image: "/work/uploadkit.webp" },
   // Shopify apps
   { name: "Gang Sheet Builder", type: "Apps", industry: "Software & Apps", what: "DTF gang-sheet editor with auto-nesting, and print-ready PDF and PNG files on every paid order", stack: "React Router · Konva · Prisma", url: "https://gangsheet.beecreativeapps.com", image: "/work/gangsheet.webp" },
-  { name: "Mad Monkey Inkz shirt builder", type: "Apps", industry: "Arts, Books & Gifts", what: "Custom shirt order app: 3D garment preview, server-side pricing, draft orders and printable production sheets", stack: "React Router · three.js · Admin extensions" },
+  { name: "Mad Monkey Inkz shirt builder", type: "Apps", industry: "Arts, Books & Gifts", what: "Custom shirt order app: 3D garment preview, server-side pricing, draft orders and printable production sheets", stack: "React Router · three.js · Admin extensions", image: "/work/shirtbuilder.webp" },
   { name: "Bee Pre Order", type: "Apps", industry: "Software & Apps", what: "Public app plus its website and demo store: pre-orders, deposits, back-in-stock alerts", stack: "React Router · Polaris", url: "https://bpo.beecreative.pk", image: "/work/beepreorder.webp" },
   { name: "Bee Bundle Box", type: "Apps", industry: "Software & Apps", what: "Public app plus its website and demo theme: build-your-own bundle boxes", stack: "React Router · Extensions · Liquid", image: "/work/bundlebox.webp" },
   { name: "Parcel Intelligence", type: "Apps", industry: "Software & Apps", what: "Extension-only Shopify app for a store migration", stack: "Preact · App Bridge", url: "https://parcelintelligence.com.au", image: "/work/pts.webp" },
@@ -293,6 +297,8 @@ export const experience = [
 ];
 
 export const education = "BS Computer Science, Sir Syed University of Engineering & Technology (2018–2022)";
+// First stop on the career timeline.
+export const study = { title: "BS Computer Science", company: "Sir Syed University of Engineering & Technology", dates: "2018 – 2022", body: "Computer science degree, studied alongside my first project-management role." };
 
 // Tech tiles: `mark` is the short label on the tile, `bg`/`fg` are the brand colours.
 export const tech = [

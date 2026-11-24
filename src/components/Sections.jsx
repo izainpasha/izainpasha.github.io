@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { delivery, education, experience, profile, projects, proof, services, tech } from "../data.js";
-import { gsap, MOTION_OK } from "../lib/gsap.js";
+import { useState } from "react";
+import { delivery, profile, projects, tech } from "../data.js";
 import { gallery } from "../gallery.js";
-import CountUp from "./CountUp.jsx";
 import Icon from "./Icon.jsx";
 import Reveal from "./Reveal.jsx";
+import WordReveal from "./WordReveal.jsx";
 
 function SectionHead({ id, title, note }) {
   return (
@@ -20,40 +19,6 @@ export function Tags({ items }) {
     <ul className="tags">
       {items.map((t) => <li key={t}>{t}</li>)}
     </ul>
-  );
-}
-
-export function Proof() {
-  return (
-    <section className="proof" aria-label="Career highlights">
-      <dl className="proof-grid container">
-        {proof.map((p, i) => (
-          <Reveal key={p.label} delay={i * 0.05}>
-            <dt>{p.label}</dt>
-            <dd>{p.text ?? <CountUp value={p.value} suffix={p.suffix} />}</dd>
-          </Reveal>
-        ))}
-      </dl>
-    </section>
-  );
-}
-
-export function Services() {
-  return (
-    <section className="section container" id="services" aria-labelledby="services-title">
-      <SectionHead id="services-title" title="What I build, from stores to custom web apps" />
-      <div className="services">
-        {services.map((s, i) => (
-          <Reveal as="article" key={s.title} className={`service${s.wide ? " service-wide" : ""}`} delay={(i % 2) * 0.06}>
-            <Icon name={s.icon} />
-            <div>
-              <h3>{s.title}</h3>
-              <p>{s.body}</p>
-            </div>
-          </Reveal>
-        ))}
-      </div>
-    </section>
   );
 }
 
@@ -215,53 +180,6 @@ export function Gallery() {
   );
 }
 
-export function Experience() {
-  const root = useRef(null);
-  useEffect(() => {
-    const mm = gsap.matchMedia();
-    mm.add(MOTION_OK, () => {
-      gsap.utils.toArray(".ladder:not(.ladder-single)", root.current).forEach((ladder) => {
-        gsap.fromTo(ladder, { "--fill": 0 }, {
-          "--fill": 1,
-          ease: "none",
-          scrollTrigger: { trigger: ladder, start: "top 75%", end: "bottom 55%", scrub: true },
-        });
-      });
-    });
-    return () => mm.revert();
-  }, []);
-
-  return (
-    <section className="section container" id="experience" aria-labelledby="exp-title" ref={root}>
-      <SectionHead
-        id="exp-title"
-        title="Four roles at one agency, from developer to production lead"
-      />
-      {experience.map((job) => (
-        <div className="exp" key={job.company}>
-          <Reveal className="exp-company">
-            <h3>{job.company}</h3>
-            <p>{job.dates}</p>
-            {job.summary && <p className="exp-summary">{job.summary}</p>}
-          </Reveal>
-          <ol className={job.roles.length > 1 ? "ladder" : "ladder ladder-single"}>
-            {job.roles.map((r) => (
-              <Reveal as="li" key={r.title} className={r.current ? "is-current" : undefined}>
-                {r.dates && <p className="ladder-date">{r.dates}</p>}
-                <h4>{r.title}</h4>
-                <p>{r.body}</p>
-              </Reveal>
-            ))}
-          </ol>
-        </div>
-      ))}
-      <Reveal as="p" className="education">
-        <strong>Education:</strong> {education}
-      </Reveal>
-    </section>
-  );
-}
-
 export function Skills() {
   return (
     <section className="section container" id="skills" aria-labelledby="skills-title">
@@ -288,7 +206,7 @@ export function Contact() {
   return (
     <section className="contact" id="contact" aria-labelledby="contact-title">
       <div className="container contact-inner">
-        <Reveal as="h2" id="contact-title">Have a store or site to build or fix?</Reveal>
+        <WordReveal as="h2" id="contact-title" text="Have a store or site to build or fix?" start="top 85%" end="top 35%" />
         <Reveal as="p" className="lede">
           Send me the brief, the designs or just the URL. I'll reply with next steps and a rough timeline.
         </Reveal>

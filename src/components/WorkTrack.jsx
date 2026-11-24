@@ -1,10 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { work } from "../data.js";
-import { gsap, MOTION_OK, pad, WIDE } from "../lib/gsap.js";
+import { gsap, MOTION_OK, pad, useGSAP, WIDE } from "../lib/gsap.js";
+import { horizontalScroll } from "../lib/horizontal.js";
 import { Tags, Thumb } from "./Sections.jsx";
 
-// Selected work as one pinned, horizontally scrolling track on wide screens.
-// Vertical scroll moves the panels sideways; a counter and rule show where you are.
+// Chapter: selected work. On wide screens the case studies travel sideways on a dark stage;
+// each screenshot wipes in as its panel arrives, and a counter tracks where you are.
 // On phones, short windows and with reduced motion it is a plain vertical list.
 export default function WorkTrack() {
   const root = useRef(null);
@@ -14,72 +15,57 @@ export default function WorkTrack() {
   const bar = useRef(null);
   const total = pad(work.length);
 
-  useEffect(() => {
-    const mm = gsap.matchMedia();
-    mm.add(`${WIDE} and ${MOTION_OK}`, () => {
-      const section = root.current;
-      const rail = track.current;
-      section.classList.add("is-horizontal");
-
-      const distance = () => Math.max(0, rail.scrollWidth - document.documentElement.clientWidth);
-      const panels = gsap.utils.toArray(".panel", rail);
-
-      const slide = gsap.to(rail, {
-        x: () => -distance(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: pin.current,
-          start: "top top",
-          end: () => `+=${distance()}`,
-          pin: true,
-          scrub: 0.8,
-          invalidateOnRefresh: true,
-          anticipatePin: 1,
-          onUpdate(self) {
-            bar.current.style.transform = `scaleX(${self.progress})`;
-            const i = Math.min(panels.length - 1, Math.round(self.progress * (panels.length - 1)));
-            count.current.textContent = pad(i + 1);
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(`${WIDE} and ${MOTION_OK}`, () => {
+        root.current.classList.add("is-horizontal");
+        const panels = gsap.utils.toArray(".panel", track.current);
+        const last = panels.length - 1;
+        const { tween, cleanup } = horizontalScroll({
+          pin: pin.current,
+          track: track.current,
+          onUpdate: (p) => {
+            bar.current.style.transform = `scaleX(${p})`;
+            count.current.textContent = pad(Math.min(last, Math.round(p * last)) + 1);
           },
-        },
-      });
-
-      // Screenshots drift slightly inside their frames as panels pass, for depth.
-      panels.forEach((panel) => {
-        const img = panel.querySelector("img");
-        if (img) {
-          gsap.fromTo(img, { xPercent: -5 }, {
-            xPercent: 5,
-            ease: "none",
-            scrollTrigger: { trigger: panel, containerAnimation: slide, start: "left right", end: "right left", scrub: true },
-          });
-        }
-        gsap.from(panel.querySelector(".panel-name"), {
-          yPercent: 40,
-          opacity: 0,
-          ease: "power2.out",
-          scrollTrigger: { trigger: panel, containerAnimation: slide, start: "left 80%", end: "left 35%", scrub: true },
         });
+
+        panels.forEach((panel, i) => {
+          const at = { trigger: panel, containerAnimation: tween, scrub: true };
+          const thumb = panel.querySelector(".case-thumb");
+          const img = panel.querySelector("img");
+          if (i > 0) {
+            gsap.fromTo(thumb, { clipPath: "inset(0% 100% 0% 0% round 16px)" }, {
+              clipPath: "inset(0% 0% 0% 0% round 16px)",
+              ease: "none",
+              scrollTrigger: { ...at, start: "left 95%", end: "left 40%" },
+            });
+            gsap.from(panel.querySelector(".panel-name"), {
+              yPercent: 60,
+              autoAlpha: 0,
+              ease: "none",
+              scrollTrigger: { ...at, start: "left 75%", end: "left 35%" },
+            });
+          }
+          if (img) {
+            gsap.fromTo(img, { xPercent: -5 }, {
+              xPercent: 5,
+              ease: "none",
+              scrollTrigger: { ...at, start: "left right", end: "right left" },
+            });
+          }
+        });
+
+        return () => {
+          cleanup();
+          root.current?.classList.remove("is-horizontal");
+          if (bar.current) bar.current.style.transform = "";
+        };
       });
-
-      // Keyboard users: tabbing into an off-screen panel scrolls the page to show it.
-      const onFocus = (e) => {
-        const panel = e.target.closest(".panel");
-        const st = slide.scrollTrigger;
-        if (!panel || !st) return;
-        const x = Math.min(Math.max(0, panel.offsetLeft - rail.offsetLeft), distance());
-        const y = st.start + (x / (distance() || 1)) * (st.end - st.start);
-        window.scrollTo({ top: y, behavior: "instant" });
-      };
-      rail.addEventListener("focusin", onFocus);
-
-      return () => {
-        rail.removeEventListener("focusin", onFocus);
-        section.classList.remove("is-horizontal");
-        bar.current && (bar.current.style.transform = "");
-      };
-    });
-    return () => mm.revert();
-  }, []);
+    },
+    { scope: root }
+  );
 
   return (
     <section className="work-stage" id="work" aria-labelledby="work-title" ref={root}>
@@ -93,13 +79,13 @@ export default function WorkTrack() {
             <span className="work-rule"><i ref={bar} /></span>
           </div>
         </div>
-        <ol className="work-track" ref={track}>
+        <ol className="work-track htrack" ref={track}>
           {work.map((w, i) => {
             const [, rest = w.title] = w.title.split(" — ");
             const subtitle = rest[0].toUpperCase() + rest.slice(1);
             const id = `case-${i}`;
             return (
-              <li className="panel" key={w.name}>
+              <li className="panel" key={w.name} data-hpanel="">
                 <article className="panel-inner" aria-labelledby={id}>
                   <div className="panel-media">
                     <Thumb name={w.name} image={w.image} />

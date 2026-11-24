@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { process } from "../data.js";
-import { gsap, MOTION_OK, pad } from "../lib/gsap.js";
+import { gsap, MOTION_OK, pad, useGSAP } from "../lib/gsap.js";
 import ParticleCanvas from "./ParticleCanvas.jsx";
 
 // Scrollytelling: the steps scroll past a sticky stage. As each step reaches the middle of
@@ -17,7 +17,7 @@ export default function ProcessStory() {
   const word = useRef(null);
   const field = useRef(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     const mm = gsap.matchMedia();
     mm.add(MOTION_OK, () => {
       const section = root.current;
@@ -56,8 +56,7 @@ export default function ProcessStory() {
         items.forEach((li) => li.classList.remove("is-active"));
       };
     });
-    return () => mm.revert();
-  }, []);
+  }, { scope: root });
 
   return (
     <section className="section container process-story" id="process" aria-labelledby="process-title" ref={root}>

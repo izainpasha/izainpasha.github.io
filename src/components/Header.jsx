@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { nav, profile } from "../data.js";
+import { ScrollTrigger, useGSAP } from "../lib/gsap.js";
 import Icon from "./Icon.jsx";
 
 // Tracks which section is on screen so its nav link can be highlighted.
@@ -29,6 +30,16 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const toggleRef = useRef(null);
   const active = useActiveSection(sectionIds);
+  const progress = useRef(null);
+
+  // A hairline under the header shows how far through the story you are.
+  useGSAP(() => {
+    ScrollTrigger.create({
+      start: 0,
+      end: "max",
+      onUpdate: (self) => (progress.current.style.transform = `scaleX(${self.progress})`),
+    });
+  });
 
   useEffect(() => {
     if (!open) return;
@@ -75,6 +86,7 @@ export default function Header() {
           </li>
         </ul>
       </nav>
+      <span className="page-progress" aria-hidden="true" ref={progress} />
     </header>
   );
 }

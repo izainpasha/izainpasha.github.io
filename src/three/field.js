@@ -1,12 +1,15 @@
-// One particle engine, two jobs.
-//  - "wave": the hero. A field of points rolls like a slow sea and lifts around the pointer.
-//  - "morph": the process story. The same points re-form for each step as the reader scrolls:
+// One particle engine, two scroll stories.
+//  - "hero": a sea of points rolls and lifts under the pointer. As the reader scrolls, the sea
+//    settles into a grid of 288 small tiles (six points each) — one per project shipped —
+//    and the camera swings from a low angle to look straight down on it.
+//  - "morph": the process story. The same points re-form for each step:
 //    a loose cloud (scope) → a lattice (build) → a sphere (QA) → a rising helix (launch) → a ring (support).
 // Loaded with a dynamic import, so three.js never blocks the first paint.
 import {
   BufferAttribute,
   BufferGeometry,
   Color,
+  MathUtils,
   NormalBlending,
   PerspectiveCamera,
   Plane,
@@ -19,7 +22,8 @@ import {
   WebGLRenderer,
 } from "three";
 
-const COUNT = 1728; // 12³, so the lattice is a whole cube
+const COUNT = 1728; // 12³ for the lattice, 48 × 36 for the sea, 288 tiles × 6 for the grid
+const TILE = { sx: 0.8, sz: 1.0, cols: 24, rows: 12 };
 
 // Small seeded RNG so the shapes look the same on every visit.
 function rng(seed) {
@@ -32,14 +36,23 @@ function rng(seed) {
 }
 
 const shapes = {
-  wave() {
-    const out = new Float32Array(COUNT * 3);
-    const cols = 48, rows = 36; // 48 × 36 = COUNT
+  sea() {
+    const out = new Float32Array(COUNT * 3), cols = 48, rows = 36;
     for (let i = 0; i < COUNT; i++) {
       const c = i % cols, r = Math.floor(i / cols);
-      out[i * 3] = (c / (cols - 1) - 0.5) * 22;
-      out[i * 3 + 1] = 0;
-      out[i * 3 + 2] = (r / (rows - 1) - 0.5) * 16;
+      out.set([(c / (cols - 1) - 0.5) * 22, 0, (r / (rows - 1) - 0.5) * 16], i * 3);
+    }
+    return out;
+  },
+  // 288 storefront tiles: 24 × 12 on landscape screens, 12 × 24 on portrait ones.
+  tiles(portrait) {
+    const out = new Float32Array(COUNT * 3);
+    const cols = portrait ? TILE.rows : TILE.cols, rows = portrait ? TILE.cols : TILE.rows;
+    const dots = [[-0.16, -0.26], [0.16, -0.26], [-0.16, 0], [0.16, 0], [-0.16, 0.26], [0.16, 0.26]];
+    for (let t = 0; t < 288; t++) {
+      const cx = ((t % cols) - (cols - 1) / 2) * TILE.sx;
+      const cz = (Math.floor(t / cols) - (rows - 1) / 2) * TILE.sz;
+      dots.forEach(([dx, dz], k) => out.set([cx + dx, 0, cz + dz], (t * 6 + k) * 3));
     }
     return out;
   },
@@ -71,7 +84,7 @@ const shapes = {
   helix() {
     const r = rng(11), out = new Float32Array(COUNT * 3);
     for (let i = 0; i < COUNT; i++) {
-      const t = i / COUNT, strand = i % 2, a = t * Math.PI * 12 + strand * Math.PI;
+      const t = i / COUNT, a = t * Math.PI * 12 + (i % 2) * Math.PI;
       const rad = 1.3 + (1 - t) * 1.4 + (r() - 0.5) * 0.35;
       out.set([Math.cos(a) * rad, (t - 0.5) * 7.4, Math.sin(a) * rad], i * 3);
     }
@@ -87,17 +100,17 @@ const shapes = {
   },
 };
 
-export const MORPH_SHAPES = ["cloud", "lattice", "sphere", "helix", "ring"];
+const MORPH_SHAPES = ["cloud", "lattice", "sphere", "helix", "ring"];
 
 const vertex = /* glsl */ `
   attribute vec3 aTarget;
   attribute float aRand;
   uniform float uMix;
   uniform float uTime;
-  uniform float uWave;
-  uniform float uLift;
+  uniform float uSea;
   uniform vec2 uPointer;
   uniform float uSize;
+  uniform float uGrow;
   uniform float uPixelRatio;
   varying float vRand;
   varying float vGlow;
@@ -109,11 +122,12 @@ const vertex = /* glsl */ `
     vec3 p = mix(position, aTarget, t);
 
     float glow = 0.0;
-    if (uWave > 0.5) {
-      p.y += sin(p.x * 0.42 + uTime * 0.6) * 0.45 + cos(p.z * 0.55 + uTime * 0.45) * 0.35;
-      float d = distance(p.xz, uPointer);
-      glow = smoothstep(3.2, 0.0, d);
-      p.y += glow * (1.1 + uLift);
+    if (uSea > 0.5) {
+      // The sea calms as each point finds its tile.
+      float calm = 1.0 - t;
+      p.y += (sin(p.x * 0.42 + uTime * 0.6) * 0.45 + cos(p.z * 0.55 + uTime * 0.45) * 0.35) * calm;
+      glow = smoothstep(3.2, 0.0, distance(p.xz, uPointer)) * calm;
+      p.y += glow * 1.2;
     } else {
       // A slow breath so a held shape still feels alive.
       p += normalize(p + 0.001) * sin(uTime * 0.8 + aRand * 6.2831) * 0.06;
@@ -121,7 +135,7 @@ const vertex = /* glsl */ `
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
-    gl_PointSize = uSize * uPixelRatio * (0.65 + aRand * 0.7 + glow * 0.8) / -mv.z;
+    gl_PointSize = uSize * uGrow * uPixelRatio * (0.65 + aRand * 0.7 + glow * 0.8) / -mv.z;
     vRand = aRand;
     vGlow = glow;
   }
@@ -145,42 +159,41 @@ const fragment = /* glsl */ `
 
 function readColors() {
   const css = getComputedStyle(document.documentElement);
-  const accent = css.getPropertyValue("--accent").trim() || "#0e6b47";
-  const text = css.getPropertyValue("--text").trim() || "#16160f";
-  return [new Color(accent), new Color(text)];
+  return [new Color(css.getPropertyValue("--accent").trim() || "#0e6b47"), new Color(css.getPropertyValue("--text").trim() || "#16160f")];
 }
 
-export function createField(canvas, { mode = "wave" } = {}) {
+export function createField(canvas, { mode = "hero" } = {}) {
+  const hero = mode === "hero";
   const renderer = new WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: "low-power" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
 
   const scene = new Scene();
-  const camera = new PerspectiveCamera(mode === "wave" ? 42 : 38, 1, 0.1, 100);
-  if (mode === "wave") camera.position.set(0, 6.2, 11.5);
-  else camera.position.set(0, 0, 13);
-  camera.lookAt(0, mode === "wave" ? -0.6 : 0, 0);
+  const camera = new PerspectiveCamera(hero ? 42 : 38, 1, 0.1, 120);
+  if (!hero) camera.position.set(0, 0, 13);
+
+  let portrait = canvas.clientHeight > canvas.clientWidth;
+  const seq = hero ? [shapes.sea(), shapes.tiles(portrait)] : MORPH_SHAPES.map((s) => shapes[s]());
 
   const geometry = new BufferGeometry();
-  const seq = mode === "wave" ? [shapes.wave()] : MORPH_SHAPES.map((s) => shapes[s]());
   const rand = new Float32Array(COUNT);
   const r = rng(3);
   for (let i = 0; i < COUNT; i++) rand[i] = r();
   geometry.setAttribute("position", new BufferAttribute(seq[0].slice(), 3));
-  geometry.setAttribute("aTarget", new BufferAttribute((seq[1] || seq[0]).slice(), 3));
+  geometry.setAttribute("aTarget", new BufferAttribute(seq[1].slice(), 3));
   geometry.setAttribute("aRand", new BufferAttribute(rand, 1));
 
   const [colorA, colorB] = readColors();
   const uniforms = {
     uMix: { value: 0 },
     uTime: { value: 0 },
-    uWave: { value: mode === "wave" ? 1 : 0 },
-    uLift: { value: 0 },
+    uSea: { value: hero ? 1 : 0 },
     uPointer: { value: new Vector2(99, 99) },
-    uSize: { value: mode === "wave" ? 64 : 58 },
+    uSize: { value: hero ? 64 : 58 },
+    uGrow: { value: 1 },
     uPixelRatio: { value: renderer.getPixelRatio() },
     uColorA: { value: colorA },
     uColorB: { value: colorB },
-    uAlpha: { value: mode === "wave" ? 0.75 : 0.9 },
+    uAlpha: { value: hero ? 0.8 : 0.9 },
   };
   const material = new ShaderMaterial({
     uniforms,
@@ -193,13 +206,31 @@ export function createField(canvas, { mode = "wave" } = {}) {
   const points = new Points(geometry, material);
   scene.add(points);
 
-  // Size to the canvas box.
+  // Hero camera: how far above the grid it must sit for the whole grid to fit the frame.
+  let overhead = 18;
+  const fitOverhead = () => {
+    const w = (portrait ? TILE.rows : TILE.cols) * TILE.sx, d = (portrait ? TILE.cols : TILE.rows) * TILE.sz;
+    const tan = Math.tan(MathUtils.degToRad(camera.fov / 2));
+    overhead = Math.max((w * 1.12) / (2 * tan * camera.aspect), (d * 1.12) / (2 * tan)) + 0.5;
+  };
+
   const resize = () => {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    if (hero) {
+      // Turning a phone (or resizing a window) between portrait and landscape re-lays the grid.
+      const nowPortrait = h > w;
+      if (nowPortrait !== portrait) {
+        portrait = nowPortrait;
+        seq[1] = shapes.tiles(portrait);
+        geometry.attributes.aTarget.array.set(seq[1]);
+        geometry.attributes.aTarget.needsUpdate = true;
+      }
+      fitOverhead();
+    }
   };
   const ro = new ResizeObserver(resize);
   ro.observe(canvas);
@@ -214,15 +245,18 @@ export function createField(canvas, { mode = "wave" } = {}) {
   };
   scheme.addEventListener("change", onScheme);
 
-  // State driven from outside.
+  // State driven from outside, eased toward every frame.
   let segment = 0;
   let mixTarget = 0;
+  let camTarget = 0;
+  let cam = 0;
   let spin = 0;
   const pointer = { x: 0, y: 0, active: false };
   const smoothPointer = new Vector2(99, 99);
   const raycaster = new Raycaster();
   const plane = new Plane(new Vector3(0, 1, 0), 0);
   const hit = new Vector3();
+  const ndc = new Vector2();
 
   const setSegment = (s) => {
     if (s === segment) return;
@@ -240,20 +274,24 @@ export function createField(canvas, { mode = "wave" } = {}) {
     const dt = Math.min((now - last) / 1000 || 0, 0.05);
     last = now;
     uniforms.uTime.value += dt;
+    uniforms.uMix.value += (mixTarget - uniforms.uMix.value) * 0.12;
 
-    if (mode === "wave") {
-      if (pointer.active) {
-        raycaster.setFromCamera(new Vector2(pointer.x, pointer.y), camera);
+    if (hero) {
+      cam += (camTarget - cam) * 0.1;
+      const k = cam * cam * (3 - 2 * cam);
+      camera.position.set(pointer.x * 1.2 * (1 - k), MathUtils.lerp(6.2, overhead, k), MathUtils.lerp(11.5, 0.6, k));
+      camera.lookAt(0, -0.6 * (1 - k), 0);
+      uniforms.uGrow.value = 1 + k * 0.5;
+      if (pointer.active && k < 0.95) {
+        ndc.set(pointer.x, pointer.y);
+        raycaster.setFromCamera(ndc, camera);
         if (raycaster.ray.intersectPlane(plane, hit)) {
           if (smoothPointer.x > 90) smoothPointer.set(hit.x, hit.z);
-          smoothPointer.lerp(new Vector2(hit.x, hit.z), 0.08);
+          smoothPointer.lerp(ndc.set(hit.x, hit.z), 0.08);
         }
       }
       uniforms.uPointer.value.copy(smoothPointer);
-      camera.position.x += (pointer.x * 1.2 - camera.position.x) * 0.03;
-      camera.lookAt(0, -0.6, 0);
     } else {
-      uniforms.uMix.value += (mixTarget - uniforms.uMix.value) * 0.12;
       spin += dt * 0.12;
       points.rotation.y = spin;
       points.rotation.x = Math.sin(spin * 0.7) * 0.18;
@@ -262,20 +300,18 @@ export function createField(canvas, { mode = "wave" } = {}) {
   };
 
   return {
-    // Morph progress, 0 → shapes.length - 1. Fractions blend between neighbouring shapes.
+    // Hero: 0 (sea) → 1 (grid). Morph: 0 → 4, fractions blend between neighbouring shapes.
     setProgress(p) {
       const max = seq.length - 1;
       const clamped = Math.max(0, Math.min(max, p));
       const s = Math.min(Math.floor(clamped), max - 1);
-      // Jumping segments (fast scroll): snap the blend to the new start so nothing flies.
+      // Jumping segments (fast scroll): start the blend at the new segment so nothing flies.
       if (s !== segment) {
         uniforms.uMix.value = s > segment ? 0 : 1;
         setSegment(s);
       }
       mixTarget = clamped - s;
-    },
-    setLift(v) {
-      uniforms.uLift.value = v;
+      camTarget = clamped / max;
     },
     setPointer(x, y) {
       pointer.x = x;

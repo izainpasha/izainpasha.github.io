@@ -4,6 +4,7 @@ import "@fontsource-variable/bricolage-grotesque/index.css";
 import "@fontsource-variable/inter/index.css";
 import "@fontsource/jetbrains-mono/latin-400.css";
 import "@fontsource/jetbrains-mono/latin-500.css";
+import "lenis/dist/lenis.css";
 import App from "./App.jsx";
 import "./style.css";
 
