@@ -71,6 +71,49 @@ export const services = [
 // `image` lives in /public/work. Without one, the card shows a branded text tile.
 export const work = [
   {
+    name: "Quatréa",
+    meta: "Concept site · Fragrance · 2026",
+    title: "Quatréa — four perfumes, one for each season, told through scroll",
+    brief: "Show what a fragrance site can feel like when the product never leaves the screen: four seasonal perfumes on one continuous 3D stage.",
+    built: "One Three.js canvas stays mounted across every page, so the four glass bottles (real-time refraction, a liquid fill level, a cap for each season) glide between layouts. GSAP ScrollTrigger runs pinned season chapters, a horizontal collection, a notes pyramid where the bottle evaporates, and a scent-finder quiz the 3D scene reacts to.",
+    result: "Live in two editions from one codebase. The standard edition detects the GPU and lowers quality when frames drop, and an Ultra edition runs at full fidelity on high-end machines.",
+    tags: ["Three.js", "React Three Fiber", "GSAP ScrollTrigger", "GLSL", "Lenis"],
+    link: { href: "https://izainpasha.github.io/quatrea/", label: "Open the live site", external: true },
+    image: "/work/quatrea.webp",
+  },
+  {
+    name: "Gang Sheet Builder",
+    meta: "Shopify app · DTF printing · 2026",
+    title: "Gang Sheet Builder — print-ready DTF sheets from the product page",
+    brief: "Let print shops sell DTF gang sheets without emailing files back and forth: customers upload artwork, size it and order, and production gets a file it can print.",
+    built: "An embedded React Router app with a Konva editor in a theme app block. Designs auto-nest onto the shortest sheet that fits, with background removal, crop, curved text, low-resolution warnings and Canva import. When an order is paid, a background worker renders a print-ready PDF and a 300 DPI PNG, and admin extensions put the files on the order page.",
+    result: "Deployed with Mad Monkey Transfers as the first client, plus a vinyl-banner builder priced from their spec. The App Store listing and reviewer steps are ready for submission.",
+    tags: ["React Router", "Konva", "Polaris", "Prisma", "Admin extensions"],
+    link: { href: "https://gangsheet.beecreativeapps.com", label: "See the app", external: true },
+    image: "/work/gangsheet.webp",
+  },
+  {
+    name: "Bella Vista",
+    meta: "Website · Riding club · 2026",
+    title: "Bella Vista — a private riding club, walked in 3D",
+    brief: "Give a private equestrian club a site that feels like visiting the estate, not another stable-yard template, and makes booking a visit the one clear action.",
+    built: "React and Vite, planned from a study of polo and riding-club sites. A Three.js estate plan, drawn as contour lines, carries the scrollytelling: the camera walks from the stable yard to the arenas, paddocks, woodland track and clubhouse as you scroll. GSAP and Lenis run the reveals, a day-in-the-yard timeline, horse portraits and membership written as invitations.",
+    result: "Built and deployed to Cloudflare Pages for review, with every placeholder marked for the club's real figures, photos and dates.",
+    tags: ["Three.js", "GSAP ScrollTrigger", "React", "Lenis", "Cloudflare Pages"],
+    image: "/work/bellavista.webp",
+  },
+  {
+    name: "Villa Luxa",
+    meta: "Homepage concepts · Boutique hotel · 2026",
+    title: "Villa Luxa — two homepage directions for a hotel in Sintra",
+    brief: "Give a four-room boutique hotel two clear options for its new homepage: one led by atmosphere, one led by getting the booking.",
+    built: "Salão is the evening option: forest green and gilt, Bodoni Moda, and a hero film. Azulejo is the daylight one: cobalt and ochre, an original tile pattern, a booking card above the fold and a room chooser. Both share a booking panel with dates, guests, rooms, extras and a live total, plus GSAP SplitText reveals and Lenis scrolling.",
+    result: "Both concepts are live for the owner to compare. Booking requests go to WhatsApp for now, and a Stripe Checkout path is ready to switch on.",
+    tags: ["HTML", "CSS", "JavaScript", "GSAP", "Booking flow"],
+    link: { href: "https://izainpasha.github.io/villaluxa-redesign/", label: "Compare both concepts", external: true },
+    image: "/work/villaluxa.webp",
+  },
+  {
     name: "Chazoku",
     meta: "Subscriptions · Matcha · 2026",
     title: "Chazoku — matcha subscriptions with a first-order gift",
@@ -152,6 +195,11 @@ export const work = [
 // Every project in Dev Work. `type` drives the filter tabs on the page.
 export const projects = [
   // Shopify stores & themes
+  { name: "The Own Studio", type: "Shopify", industry: "Fashion & Apparel", what: "Ready-to-wear launch system: metafield-driven stages from coming soon to pre-order to on sale, notify-me, size guide and a GDPR-ready Mailchimp signup", stack: "Dawn · Metafields · STOQ · Mailchimp", url: "https://theownstudio.com", image: "/work/ownstudio.webp" },
+  { name: "Mad Monkey Transfers", type: "Shopify", industry: "Arts, Books & Gifts", what: "DTF product page and an upload-or-build chooser wired into the Gang Sheet and shirt builder apps, plus vinyl banner and patch templates", stack: "Dawn · Custom sections", url: "https://madmonkeytransfers.com", image: "/work/madmonkey.webp" },
+  { name: "US Filtermaxx", type: "Shopify", industry: "Industrial & Trade", what: "37 custom sections for an industrial centrifuge and pump store, with suction and discharge hose sizing calculators and a hose kit builder", stack: "Dawn · Custom sections · JavaScript", url: "https://usfiltermaxx.com", image: "/work/usfiltermaxx.webp" },
+  { name: "The Cocoa Nook", type: "Shopify", industry: "Food & Drink", what: "Store moved onto Dawn 16 with a video-led product template, subscription popup and wishlist", stack: "Dawn 16 · Liquid" },
+  { name: "Revarla", type: "Shopify", industry: "Beauty & Skincare", what: "Replo product page rebuilt natively in the theme, with Kaching bundle selectors and free-gift cart lines", stack: "Elixir theme · Kaching" },
   { name: "Used Conex", type: "Shopify", industry: "Industrial & Trade", what: "WordPress → Shopify migration, Figma build, 58 city pages", stack: "Dawn · Metafields · GSAP", url: "https://usedconex.com", image: "/work/usedconex.webp" },
   { name: "Reactistan", type: "Shopify", industry: "Arts, Books & Gifts", what: "Custom truck-art brand theme with Urdu lettering and a retro-TV video block", stack: "Dawn · Custom sections", url: "https://www.reactistan.com", image: "/work/reactistan.webp" },
   { name: "Chazoku", type: "Shopify", industry: "Food & Drink", what: "Recharge subscriptions, app-proxy bridge, Shopify Flow", stack: "Broadcast · Recharge", url: "https://chazoku.com", image: "/work/chazoku.webp" },
@@ -173,18 +221,25 @@ export const projects = [
   { name: "ST Threadz", type: "Shopify", industry: "Fashion & Apparel", what: "Fashion store custom sections", stack: "Liquid", url: "https://stthreadz.com", image: "/work/stthreadz.webp" },
   { name: "Bee Upload Kit — demo site", type: "Shopify", industry: "Software & Apps", what: "Custom demo theme and marketing site for Bee Creative's file-upload app: hero, pricing, docs, live demo grid and two print-shop demo stores", stack: "Custom Liquid theme · OS 2.0 · HTML", image: "/work/uploadkit.webp" },
   // Shopify apps
+  { name: "Gang Sheet Builder", type: "Apps", industry: "Software & Apps", what: "DTF gang-sheet editor with auto-nesting, and print-ready PDF and PNG files on every paid order", stack: "React Router · Konva · Prisma", url: "https://gangsheet.beecreativeapps.com", image: "/work/gangsheet.webp" },
+  { name: "Mad Monkey Inkz shirt builder", type: "Apps", industry: "Arts, Books & Gifts", what: "Custom shirt order app: 3D garment preview, server-side pricing, draft orders and printable production sheets", stack: "React Router · three.js · Admin extensions" },
   { name: "Bee Pre Order", type: "Apps", industry: "Software & Apps", what: "Public app plus its website and demo store: pre-orders, deposits, back-in-stock alerts", stack: "React Router · Polaris", url: "https://bpo.beecreative.pk", image: "/work/beepreorder.webp" },
   { name: "Bee Bundle Box", type: "Apps", industry: "Software & Apps", what: "Public app plus its website and demo theme: build-your-own bundle boxes", stack: "React Router · Extensions · Liquid", image: "/work/bundlebox.webp" },
   { name: "Parcel Intelligence", type: "Apps", industry: "Software & Apps", what: "Extension-only Shopify app for a store migration", stack: "Preact · App Bridge", url: "https://parcelintelligence.com.au", image: "/work/pts.webp" },
   { name: "Northfield", type: "Apps", industry: "Industrial & Trade", what: "HS code and country-of-origin bulk updates with GraphQL bulk operations", stack: "Admin GraphQL", url: "https://www.northfield.com", image: "/work/northfield.webp" },
   // Web & WordPress
+  { name: "Quatréa", type: "Web", industry: "Beauty & Skincare", what: "Scrollytelling perfume concept with refractive 3D bottles on one persistent WebGL stage", stack: "Three.js · R3F · GSAP", url: "https://izainpasha.github.io/quatrea/", image: "/work/quatrea.webp" },
+  { name: "Bella Vista Saddle Club", type: "Web", industry: "Fitness & Sports", what: "Private riding-club site with a 3D estate walk-through driven by scroll", stack: "React · Three.js · GSAP", image: "/work/bellavista.webp" },
+  { name: "Villa Luxa", type: "Web", industry: "Travel & Hospitality", what: "Two homepage concepts for a Sintra boutique hotel, with a shared booking panel", stack: "HTML · GSAP · Lenis", url: "https://izainpasha.github.io/villaluxa-redesign/", image: "/work/villaluxa.webp" },
+  { name: "Artis Trade Alliance", type: "Web", industry: "Professional Services", what: "17-page site with Zoho CRM forms, consent-gated GA4 and a REST deploy pipeline", stack: "WordPress · Elementor · PHP" },
+  { name: "Boston Business Services", type: "Web", industry: "Professional Services", what: "GA4 behind cookie consent, tracking leads, calls, emails and bookings", stack: "WordPress · GA4", url: "https://bostonbservices.com", image: "/work/boston.webp" },
   { name: "Infuse Digitals", type: "Web", industry: "Professional Services", what: "Agency site rebuilt from a WordPress backup", stack: "React · Vite · GSAP · Lenis", url: "https://infusedigitals.com", image: "/work/infuse.webp" },
   { name: "Adjuvia Therapeutics", type: "Web", industry: "Medical & Clinics", what: "Homepage built from Figma", stack: "WordPress", url: "https://adjuvia.com", image: "/work/adjuvia.webp" },
   { name: "Paradise Jets", type: "Web", industry: "Travel & Hospitality", what: "Responsive audit and fixes across Elementor pages", stack: "WordPress · Elementor", url: "https://paradisejets.com", image: "/work/paradise.webp" },
   { name: "Easystyle Landscaping", type: "Web", industry: "Home & Living", what: "Patio & paving page rebuild, image SEO", stack: "WordPress · Divi", url: "https://www.easystylelandscaping.ie", image: "/work/easystyle.webp" },
   { name: "SAK Professional", type: "Web", industry: "Real Estate & Finance", what: "Accounting services and homepage rebuild", stack: "WordPress · Elementor", url: "https://sakprofessional.ca", image: "/work/sak.webp" },
   { name: "The Artes Group", type: "Web", industry: "Real Estate & Finance", what: "WordPress site work via a custom REST connector", stack: "WordPress · PHP", url: "https://theartesgroup.com", image: "/work/artes.webp" },
-  { name: "ExitRight", type: "Web", industry: "Real Estate & Finance", what: "Founder landing page", stack: "HTML", image: "/work/exitright.webp" },
+  { name: "ExitArchitect", type: "Web", industry: "Real Estate & Finance", what: "Landing page for a founder exit and relocation adviser", stack: "HTML", image: "/work/exitright.webp" },
   { name: "Jordan RSVP", type: "Web", industry: "Professional Services", what: "Form → Zapier → Klaviyo access-code email flow", stack: "Zapier · Klaviyo", image: "/work/jordan.webp" },
 ];
 

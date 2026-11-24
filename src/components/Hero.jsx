@@ -1,5 +1,8 @@
 import { domAnimation, LazyMotion, m, stagger } from "motion/react";
+import { useEffect, useRef } from "react";
 import { profile } from "../data.js";
+import { gsap, MOTION_OK } from "../lib/gsap.js";
+import ParticleCanvas from "./ParticleCanvas.jsx";
 
 const list = {
   hidden: {},
@@ -16,9 +19,41 @@ const headline = {
 };
 
 export default function Hero() {
+  const field = useRef(null);
+  const section = useRef(null);
+
+  useEffect(() => {
+    // The pointer lifts the sea of points beneath it.
+    const onMove = (e) => field.current?.setPointer((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+    addEventListener("pointermove", onMove, { passive: true });
+
+    // Scrolling away swells the waves, and the field drifts up and out.
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_OK, () => {
+      const state = { lift: 0 };
+      gsap.to(state, {
+        lift: 2.2,
+        ease: "none",
+        onUpdate: () => field.current?.setLift(state.lift),
+        scrollTrigger: { trigger: section.current, start: "top top", end: "bottom top", scrub: true },
+      });
+      gsap.to(".hero-field", {
+        yPercent: -18,
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: { trigger: section.current, start: "center top+=30%", end: "bottom top", scrub: true },
+      });
+    });
+    return () => {
+      removeEventListener("pointermove", onMove);
+      mm.revert();
+    };
+  }, []);
+
   return (
     <LazyMotion features={domAnimation} strict>
       <m.section
+        ref={section}
         className="hero container"
         id="top"
         aria-labelledby="hero-title"
@@ -26,6 +61,9 @@ export default function Hero() {
         initial="hidden"
         animate="show"
       >
+        <div className="hero-field">
+          <ParticleCanvas mode="wave" apiRef={field} />
+        </div>
         <div className="hero-copy">
           <m.p className="eyebrow" data-hero="" variants={item}>
             <span className="status-dot" aria-hidden="true" />
