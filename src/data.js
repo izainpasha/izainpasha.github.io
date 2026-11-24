@@ -117,6 +117,7 @@ export const work = [
     built: "React and Vite, planned from a study of polo and riding-club sites. A Three.js estate plan, drawn as contour lines, carries the scrollytelling: the camera walks from the stable yard to the arenas, paddocks, woodland track and clubhouse as you scroll. GSAP and Lenis run the reveals, a day-in-the-yard timeline, horse portraits and membership written as invitations.",
     result: "Built and deployed to Cloudflare Pages for review, with every placeholder marked for the club's real figures, photos and dates.",
     tags: ["Three.js", "GSAP ScrollTrigger", "React", "Lenis", "Cloudflare Pages"],
+    link: { href: "https://bella-vista-saddle-club.pages.dev", label: "Open the live site", external: true },
     image: "/work/bellavista.webp",
   },
   {
@@ -215,7 +216,6 @@ export const projects = [
   { name: "The Own Studio", type: "Shopify", industry: "Fashion & Apparel", what: "Ready-to-wear launch system: metafield-driven stages from coming soon to pre-order to on sale, notify-me, size guide and a GDPR-ready Mailchimp signup", stack: "Dawn · Metafields · STOQ · Mailchimp", url: "https://theownstudio.com", image: "/work/ownstudio.webp" },
   { name: "Mad Monkey Transfers", type: "Shopify", industry: "Arts, Books & Gifts", what: "DTF product page and an upload-or-build chooser wired into the Gang Sheet and shirt builder apps, plus vinyl banner and patch templates", stack: "Dawn · Custom sections", url: "https://madmonkeytransfers.com", image: "/work/madmonkey.webp" },
   { name: "US Filtermaxx", type: "Shopify", industry: "Industrial & Trade", what: "37 custom sections for an industrial centrifuge and pump store, with suction and discharge hose sizing calculators and a hose kit builder", stack: "Dawn · Custom sections · JavaScript", url: "https://usfiltermaxx.com", image: "/work/usfiltermaxx.webp" },
-  { name: "The Cocoa Nook", type: "Shopify", industry: "Food & Drink", what: "Store moved onto Dawn 16 with a video-led product template, subscription popup and wishlist", stack: "Dawn 16 · Liquid" },
   { name: "Revarla", type: "Shopify", industry: "Beauty & Skincare", what: "Replo product page rebuilt natively in the theme, with Kaching bundle selectors and free-gift cart lines", stack: "Elixir theme · Kaching", url: "https://revarla.com", image: "/work/revarla.webp" },
   { name: "Used Conex", type: "Shopify", industry: "Industrial & Trade", what: "WordPress → Shopify migration, Figma build, 58 city pages", stack: "Dawn · Metafields · GSAP", url: "https://usedconex.com", image: "/work/usedconex.webp" },
   { name: "Reactistan", type: "Shopify", industry: "Arts, Books & Gifts", what: "Custom truck-art brand theme with Urdu lettering and a retro-TV video block", stack: "Dawn · Custom sections", url: "https://www.reactistan.com", image: "/work/reactistan.webp" },
@@ -246,7 +246,7 @@ export const projects = [
   { name: "Northfield", type: "Apps", industry: "Industrial & Trade", what: "HS code and country-of-origin bulk updates with GraphQL bulk operations", stack: "Admin GraphQL", url: "https://www.northfield.com", image: "/work/northfield.webp" },
   // Web & WordPress
   { name: "Quatréa", type: "Web", industry: "Beauty & Skincare", what: "Scrollytelling perfume concept with refractive 3D bottles on one persistent WebGL stage", stack: "Three.js · R3F · GSAP", url: "https://izainpasha.github.io/quatrea/", image: "/work/quatrea.webp" },
-  { name: "Bella Vista Saddle Club", type: "Web", industry: "Fitness & Sports", what: "Private riding-club site with a 3D estate walk-through driven by scroll", stack: "React · Three.js · GSAP", image: "/work/bellavista.webp" },
+  { name: "Bella Vista Saddle Club", type: "Web", industry: "Fitness & Sports", what: "Private riding-club site with a 3D estate walk-through driven by scroll", stack: "React · Three.js · GSAP", url: "https://bella-vista-saddle-club.pages.dev", image: "/work/bellavista.webp" },
   { name: "Villa Luxa", type: "Web", industry: "Travel & Hospitality", what: "Two homepage concepts for a Sintra boutique hotel, with a shared booking panel", stack: "HTML · GSAP · Lenis", url: "https://izainpasha.github.io/villaluxa-redesign/", image: "/work/villaluxa.webp" },
   { name: "Artis Trade Alliance", type: "Web", industry: "Professional Services", what: "17-page site with Zoho CRM forms, consent-gated GA4 and a REST deploy pipeline", stack: "WordPress · Elementor · PHP" },
   { name: "Boston Business Services", type: "Web", industry: "Professional Services", what: "GA4 behind cookie consent, tracking leads, calls, emails and bookings", stack: "WordPress · GA4", url: "https://bostonbservices.com", image: "/work/boston.webp" },
