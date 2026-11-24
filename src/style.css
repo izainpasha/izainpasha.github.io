@@ -429,47 +429,10 @@ svg { display: block; flex-shrink: 0; }
   letter-spacing: -0.03em;
 }
 
-/* Code card — always dark, like an editor */
-.code-card {
-  margin: var(--space-4) 0 0;
-  min-width: 0;
-  border-radius: var(--radius);
-  background: var(--code-bg);
-  color: var(--code-text);
-  box-shadow: var(--shadow), 0 0 0 1px rgb(255 255 255 / 0.06) inset;
-  overflow: hidden;
-}
-.code-bar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid rgb(255 255 255 / 0.08);
-}
+/* Editor chrome shared by the service snippets */
 .code-dots { display: flex; gap: 6px; }
 .code-dots i { width: 10px; height: 10px; border-radius: 50%; background: rgb(255 255 255 / 0.16); }
-.code-file { font: 400 0.78rem/1 var(--font-mono); color: var(--code-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.code-card pre {
-  margin: 0;
-  padding: var(--space-6) var(--space-4);
-  overflow-x: auto;
-  font: 400 0.82rem/1.75 var(--font-mono);
-}
-@media (min-width: 768px) { .code-card pre { padding: var(--space-6); font-size: 0.875rem; } }
-.c-tag { color: var(--code-tag); }
-.c-key { color: var(--code-key); }
-.c-str { color: var(--code-str); }
-.c-num { color: var(--code-num); }
-.code-foot {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
-  padding: var(--space-3) var(--space-4) var(--space-4);
-  border-top: 1px solid rgb(255 255 255 / 0.08);
-  font-size: 0.8rem;
-  color: var(--code-muted);
-}
-.code-foot b { color: var(--code-text); font-weight: 600; }
+.code-file { font: 400 0.76rem/1 var(--font-mono); color: var(--code-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ---------- Sections ---------- */
 .section { padding-block: var(--space-16); }
@@ -527,12 +490,13 @@ svg { display: block; flex-shrink: 0; }
 .chapter.is-horizontal .hpin {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: safe center;
   height: 100dvh;
   padding: calc(var(--header-h) + var(--space-6)) 0 var(--space-8);
   overflow: hidden;
 }
-.chapter.is-horizontal .chapter-head { flex: none; margin-bottom: var(--space-8); }
+.chapter.is-horizontal .chapter-head { flex: none; margin-bottom: var(--space-6); }
+.services-chapter.is-horizontal .chapter-head h2 { max-width: none; font-size: clamp(1.75rem, min(3.4vw, 5.5vh), 2.75rem); }
 .is-horizontal .hrule { display: block; }
 .chapter.is-horizontal .htrack {
   display: flex;
@@ -572,10 +536,36 @@ svg { display: block; flex-shrink: 0; }
 }
 .svc h3 { font-size: clamp(1.4rem, 2.2vw, 1.9rem); letter-spacing: -0.03em; }
 .svc p { color: var(--muted); max-width: 46ch; }
+.svc .snippet { margin-top: auto; }
 .is-horizontal .services-track { gap: var(--space-6); align-items: stretch; }
-.is-horizontal .svc { width: min(400px, 80vw); min-height: min(58vh, 520px); padding: var(--space-8); }
-.is-horizontal .svc-theme { width: min(620px, 86vw); }
-.is-horizontal .svc .code-card { margin-top: auto; }
+.is-horizontal .svc { width: min(420px, 82vw); padding: var(--space-6); }
+.is-horizontal .svc .icon { margin-bottom: var(--space-2); }
+
+/* Snippet: the same small editor window on every service card. */
+.snippet {
+  margin: var(--space-4) 0 0;
+  border-radius: var(--radius-sm);
+  background: var(--code-bg);
+  color: var(--code-text);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06) inset;
+  overflow: hidden;
+}
+.snippet-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+}
+.snippet pre {
+  margin: 0;
+  min-height: calc(6 * 1.6em + 2 * var(--space-4));
+  padding: var(--space-4);
+  font: 400 0.76rem/1.6 var(--font-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 768px) { .snippet pre { white-space: pre; } }
 
 .case-thumb {
   display: grid;

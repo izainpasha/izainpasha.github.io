@@ -67,7 +67,7 @@ export default function CareerTrack() {
     <section className="chapter career" id="experience" aria-labelledby="exp-title" ref={root}>
       <div className="hpin" ref={pin}>
         <div className="container chapter-head">
-          <h2 id="exp-title">Four roles at one agency, from developer to production lead</h2>
+          <h2 id="exp-title">From my first Liquid template in 2021 to apps in production</h2>
           <p className="chapter-note">{experience[0].summary}</p>
         </div>
         <div className="htrack career-track" ref={track}>

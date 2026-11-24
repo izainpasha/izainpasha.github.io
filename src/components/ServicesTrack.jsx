@@ -4,26 +4,16 @@ import { gsap, MOTION_OK, useGSAP } from "../lib/gsap.js";
 import { horizontalScroll } from "../lib/horizontal.js";
 import Icon from "./Icon.jsx";
 
-// The Liquid schema that used to sit in the hero now lives on the theme panel, where it explains something.
-function CodeCard() {
+// A small editor window with a few lines from that kind of work. Every card has one, at the
+// same size, so the row reads as a set.
+function Snippet({ file, code }) {
   return (
-    <figure className="code-card" aria-label="Example Shopify section schema written in Liquid">
-      <div className="code-bar">
+    <figure className="snippet" aria-label={`Example code: ${file}`}>
+      <figcaption className="snippet-bar">
         <span className="code-dots" aria-hidden="true"><i /><i /><i /></span>
-        <span className="code-file">sections/featured-collection.liquid</span>
-      </div>
-      <pre>
-        <code>
-          <span className="c-tag">{"{% schema %}"}</span>{"\n{\n  "}
-          <span className="c-key">"name"</span>: <span className="c-str">"Featured collection"</span>,{"\n  "}
-          <span className="c-key">"settings"</span>: [{"\n    { "}
-          <span className="c-key">"type"</span>: <span className="c-str">"collection"</span>, <span className="c-key">"id"</span>: <span className="c-str">"collection"</span>{" },\n    { "}
-          <span className="c-key">"type"</span>: <span className="c-str">"range"</span>, <span className="c-key">"id"</span>: <span className="c-str">"products"</span>,{"\n      "}
-          <span className="c-key">"min"</span>: <span className="c-num">2</span>, <span className="c-key">"max"</span>: <span className="c-num">12</span>{" }\n  ],\n  "}
-          <span className="c-key">"blocks"</span>: [{"{ "}<span className="c-key">"type"</span>: <span className="c-str">"@app"</span>{" }]\n}\n"}
-          <span className="c-tag">{"{% endschema %}"}</span>
-        </code>
-      </pre>
+        <span className="code-file">{file}</span>
+      </figcaption>
+      <pre><code>{code}</code></pre>
     </figure>
   );
 }
@@ -73,11 +63,11 @@ export default function ServicesTrack() {
         </div>
         <ul className="htrack services-track" ref={track}>
           {services.map((s) => (
-            <li key={s.title} className={`svc${s.icon === "theme" ? " svc-theme" : ""}`} data-hpanel="">
+            <li key={s.title} className="svc" data-hpanel="">
               <Icon name={s.icon} />
               <h3>{s.title}</h3>
               <p>{s.body}</p>
-              {s.icon === "theme" && <CodeCard />}
+              {s.code && <Snippet file={s.file} code={s.code} />}
             </li>
           ))}
         </ul>

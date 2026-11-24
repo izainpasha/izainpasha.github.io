@@ -86,7 +86,7 @@ export default function Hero() {
             </m.h1>
             <m.p className="lede" data-hero="" variants={item}>
               I'm {profile.name}. I build custom Shopify themes and apps, WordPress and Webflow sites,
-              and React and PHP web apps, and I lead the teams that ship them.
+              and React and PHP web apps, from the first brief to launch.
             </m.p>
             <m.div className="hero-actions" data-hero="" variants={item}>
               <a className="btn" href="#work">See selected work</a>
@@ -102,8 +102,7 @@ export default function Hero() {
               {count.suffix}
             </p>
             <p className="tally-label">
-              Shopify stores, apps, WordPress and Webflow sites shipped since 2021, as a developer and as the
-              lead of the teams that built them.
+              Shopify stores, apps, WordPress and Webflow sites I've built and shipped since 2021.
             </p>
             <dl className="tally-proof">
               {rest.map((p) => (

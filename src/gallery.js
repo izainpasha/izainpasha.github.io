@@ -1,4 +1,4 @@
-// Live client stores delivered with Beecreative teams (from the Trello board export, checked live and screenshotted).
+// Live client stores I've worked on (from the Trello board export, checked live and screenshotted).
 // Ordered round-robin across industries so the first page shows a spread of work.
 export const gallery = [
   {name: "Adam Baker", industry: "Fashion & Apparel", platform: "Shopify", url: "https://adambaker.com", image: "/stores/adambaker-com.webp"},

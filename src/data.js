@@ -23,51 +23,64 @@ export const nav = [
 export const proof = [
   { value: 300, suffix: "+", label: "Shopify & eCommerce projects delivered" },
   { value: 5, suffix: "+", label: "Years building commerce" },
-  { value: 13, suffix: "+", label: "Developers & PMs led" },
-  { text: "25–30%", label: "Lift in on-time delivery" },
+  { value: 6, suffix: "", label: "Custom Shopify apps built" },
+  { value: 4, suffix: "", label: "Platforms: Shopify, WordPress, Webflow, React" },
   { value: 25, suffix: "%", label: "Of clients come back" },
 ];
 
 // Read word by word as it scrolls past (Manifesto.jsx).
 export const manifesto =
-  "I started in 2021 as a junior developer fixing Liquid templates. Today I run production for two teams of 13+ developers and PMs, and I still write the hard parts myself: a cart that sells subscriptions, an app-proxy bridge for first-order gifts, a gang-sheet editor that prints at 300 DPI.";
+  "I started in 2021 as a junior developer fixing Liquid templates. Today I take projects from the first brief to launch, and I write the hard parts myself: a cart that sells subscriptions, an app-proxy bridge for first-order gifts, a gang-sheet editor that prints at 300 DPI.";
 
 export const services = [
   {
     icon: "theme",
+    file: "sections/hero.liquid",
+    code: "{% schema %}\n{ \"name\": \"Hero\",\n  \"settings\": [ ... ],\n  \"blocks\": [{ \"type\": \"@app\" }] }\n{% endschema %}",
     title: "Custom Shopify themes",
-    body: "Online Store 2.0 themes coded from scratch. Sections, blocks and metafields let your team edit every page without a developer.",
+    body: "Online Store 2.0 themes coded from scratch. Sections, blocks and metafields let you edit every page without a developer.",
   },
   {
     icon: "app",
+    file: "app/routes/app._index.jsx",
+    code: "const { admin } =\n  await authenticate.admin(request);\nconst res = await admin.graphql(\n  `query { shop { name } }`);\nreturn json(await res.json());",
     title: "Shopify apps",
     body: "Embedded apps with Remix, Polaris and App Bridge. They connect to the Admin and Storefront APIs, webhooks and third-party services.",
   },
   {
     icon: "web",
+    file: "functions.php",
+    code: "add_action('wp_enqueue_scripts',\n  function () {\n    wp_enqueue_style('child-theme',\n      get_stylesheet_uri());\n  });",
     title: "WordPress & Webflow sites",
-    body: "Marketing sites and rebuilds in WordPress (Elementor, Divi, custom themes) and Webflow, built so your team can edit them without breaking the layout.",
+    body: "Marketing sites and rebuilds in WordPress (Elementor, Divi, custom themes) and Webflow, built so you can edit them without breaking the layout.",
   },
   {
     icon: "code",
+    file: "src/App.jsx",
+    code: "export default function App() {\n  const products = useProducts();\n  return (\n    <Grid items={products} />\n  );\n}",
     title: "React & custom PHP",
     body: "React and Vite front ends, Node and custom PHP back ends, and REST or GraphQL integrations for anything a page builder can't do.",
   },
   {
     icon: "design",
+    file: "styles.css",
+    code: ".hero h1 {\n  font-size: clamp(2.5rem, 6vw, 5rem);\n  line-height: 1;\n  text-wrap: balance;\n}",
     title: "Design to build",
     body: "Figma and Adobe XD files built into pixel-perfect, responsive, mobile-first stores and sites, tested across browsers and devices.",
   },
   {
     icon: "speed",
+    file: "layout/theme.liquid",
+    code: "<link rel=\"preload\" as=\"image\"\n  href=\"{{ hero | image_url:\n    width: 1600 }}\"\n  fetchpriority=\"high\">",
     title: "Speed & conversion",
     body: "Core Web Vitals and Lighthouse work, plus conversion-rate fixes on product pages, collections and the cart.",
   },
   {
     icon: "team",
+    file: "release-checklist.md",
+    code: "- [x] Code review approved\n- [x] QA on iOS, Android, desktop\n- [x] Live theme duplicated\n- [ ] Publish at 10:00",
     title: "Delivery you can plan around",
-    body: "I've run production for two dev and SEO teams. You get sprint plans, code review, QA and release management, so your launch date holds.",
-    wide: true,
+    body: "You get a written scope, regular updates, tested releases and a rollback plan, so your launch date holds.",
   },
 ];
 
@@ -187,7 +200,7 @@ export const work = [
     name: "Crunchy Girl Granola",
     meta: "Theme + private app · Food · 2026",
     title: "Crunchy Girl Granola — custom theme and admin tooling",
-    brief: "Turn a Lovable prototype into a real store, and give the team a safe way to manage products and Seal subscriptions.",
+    brief: "Turn a Lovable prototype into a real store, and give the owners a safe way to manage products and Seal subscriptions.",
     built: "An Online Store 2.0 theme restyled to match the prototype with custom homepage sections. Plus a private admin app that uses Admin GraphQL and the Seal Subscriptions API.",
     result: "Cart, checkout, search and variants work out of the box. Write commands in the admin app need explicit confirmation.",
     tags: ["Dawn", "Liquid", "Admin GraphQL", "Seal", "Node.js"],
@@ -264,13 +277,13 @@ export const experience = [
       {
         title: "Production Manager",
         dates: "Feb 2025 – Present",
-        body: "Lead 2 development and SEO teams (13+ developers and PMs) from scoping to post-launch. I'm the technical bridge between clients, sales and engineering.",
+        body: "I take client projects from scoping to launch: requirements, technical plan, the build and the release. Clients deal with me directly on every technical decision.",
         current: true,
       },
       {
         title: "Team Lead",
         dates: "Mar 2024 – Feb 2025",
-        body: "Set technical standards and reviewed all code before release. Coached developers on Liquid, JavaScript and Shopify best practices.",
+        body: "Built the most complex client work: custom apps, integrations and theme architecture, and checked every release against Shopify best practices before it went live.",
       },
       {
         title: "Senior CMS Developer",
@@ -290,7 +303,7 @@ export const experience = [
     roles: [
       {
         title: "Project Manager (Service Delivery)",
-        body: "Ran client communication, requirements and delivery for web and digital products, coordinating designers and developers.",
+        body: "Ran client communication, requirements and delivery for web and digital products.",
       },
     ],
   },

@@ -143,8 +143,8 @@ export function Gallery() {
     <section className="section container" id="stores" aria-labelledby="stores-title">
       <SectionHead
         id="stores-title"
-        title={`${gallery.length} more live stores, delivered with my teams at Beecreative`}
-        note="As Team Lead and Production Manager I scoped, reviewed and shipped these with Beecreative's developers and designers."
+        title={`${gallery.length} more live client stores I've worked on`}
+        note="Theme builds, customisations, fixes and launches for clients since 2021, filterable by industry."
       />
       <Reveal className="filters chips" role="group" aria-label="Filter stores by industry">
         <button type="button" className="filter" aria-pressed={industry === "All"} onClick={() => pick("All")}>
